@@ -64,7 +64,7 @@ jobs:
       - run: >
           RUSTFLAGS="-D warnings"
           RUSTDOCFLAGS="--cfg docsrs"
-          cargo doc --features neovim-nightly
+          cargo doc --no-deps --features neovim-nightly
 
   format:
     name: format
