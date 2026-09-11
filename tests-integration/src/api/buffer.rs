@@ -3,9 +3,9 @@ use std::ops;
 use std::rc::Rc;
 
 use all_asserts::*;
-use nvim_oximlua::api::{self, Buffer, opts::*, types::*};
+use nvimo::api::{self, Buffer, opts::*, types::*};
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_attach() {
     let buf = Buffer::current();
 
@@ -24,7 +24,7 @@ fn buf_attach() {
     assert!(bytes_written.is_ok(), "{bytes_written:?}");
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_attach_on_bytes() -> Result<(), api::Error> {
     let mut buffer = api::create_buf(true, false)?;
 
@@ -54,21 +54,21 @@ fn buf_attach_on_bytes() -> Result<(), api::Error> {
     Ok(())
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_call_nil() {
     let buf = Buffer::current();
     let res = buf.call(|_| ());
     assert_eq!(Ok(()), res);
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_call_int() {
     let buf = Buffer::current();
     let res = buf.call(|_| 42);
     assert_eq!(Ok(42), res);
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_create_del_user_command() {
     let mut buf = Buffer::current();
 
@@ -92,13 +92,13 @@ fn buf_create_del_user_command() {
     assert_eq!(Ok(()), buf.del_user_command("Bar"));
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_get_changedtick() {
     let buf = Buffer::current();
     assert!(buf.get_changedtick().is_ok());
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_get_lines_range_bounds() {
     let mut buf = api::create_buf(true, false).unwrap();
 
@@ -130,27 +130,27 @@ fn buf_get_lines_range_bounds() {
     }
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_get_name_invalid_buf() {
     let buf = Buffer::from(42);
     let err = buf.get_name().unwrap_err();
     assert!(matches!(err, api::Error::Nvim(_)));
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_loaded_n_valid() {
     let buf = Buffer::current();
     assert!(buf.is_loaded());
     assert!(buf.is_valid());
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_new_delete() {
     let buf = api::create_buf(true, false).unwrap();
     assert_eq!(Ok(()), buf.delete(&Default::default()));
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_set_get_del_keymap() {
     let mut buf = Buffer::current();
 
@@ -172,7 +172,7 @@ fn buf_set_get_del_keymap() {
 }
 
 /// Regression test for https://github.com/noib3/nvim-oxi/issues/226
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_set_get_keymap_with_bufnr_more_than_one() {
     let mut buf = api::create_buf(true, false).unwrap();
 
@@ -192,7 +192,7 @@ fn buf_set_get_keymap_with_bufnr_more_than_one() {
     assert!(keymaps.iter().all(|keymap| keymap.buffer == Some(buf.clone())));
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_set_get_del_nvo_keymap() {
     let mut buf = Buffer::current();
 
@@ -215,7 +215,7 @@ fn buf_set_get_del_nvo_keymap() {
     assert_eq!(Ok(()), res);
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_set_get_del_lines() {
     let mut buf = Buffer::current();
 
@@ -233,7 +233,7 @@ fn buf_set_get_del_lines() {
     assert_eq!(Ok(1), buf.line_count());
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_set_get_del_mark() {
     let mut buf = Buffer::current();
     let opts = SetMarkOpts::default();
@@ -247,7 +247,7 @@ fn buf_set_get_del_mark() {
     assert_eq!(Ok(()), res);
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_set_get_del_text() {
     let mut buf = Buffer::current();
 
@@ -279,7 +279,7 @@ fn buf_set_get_del_text() {
     assert_eq!(Ok(1), buf.line_count());
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_set_get_del_var() {
     let mut buf = Buffer::current();
     buf.set_var("foo", 42).unwrap();
@@ -287,7 +287,7 @@ fn buf_set_get_del_var() {
     assert_eq!(Ok(()), buf.del_var("foo"));
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_set_get_name() {
     let mut buf = api::create_buf(true, false).unwrap();
     assert_eq!(buf.get_name().unwrap(), "");
@@ -296,7 +296,7 @@ fn buf_set_get_name() {
     buf.set_name("").unwrap();
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_set_get_option_value() {
     let buf = Buffer::current();
     let opts = OptionOpts::builder().buf(buf.clone()).build();
@@ -309,11 +309,11 @@ fn buf_set_get_option_value() {
 }
 
 #[cfg_attr(target_os = "windows", ignore = "Windows' paths are dumb")]
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn buf_terminal_name() {
     api::command("term").unwrap();
 
-    let term_name_oxi = Buffer::current().get_name().unwrap();
+    let term_name_nvimo = Buffer::current().get_name().unwrap();
 
     let term_name_lua = api::exec2(
         "lua =vim.api.nvim_buf_get_name(0)",
@@ -323,7 +323,7 @@ fn buf_terminal_name() {
     .unwrap();
 
     assert_eq!(
-        term_name_oxi,
+        term_name_nvimo,
         term_name_lua.to_string_lossy().trim_matches('"')
     );
 }

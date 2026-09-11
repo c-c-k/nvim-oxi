@@ -497,47 +497,47 @@ dependencies = [
 ]
 
 [[package]]
-name = "nvim-oximlua"
+name = "nvimo"
 version = "0.0.1"
 dependencies = [
  "cargo_metadata",
  "mlua",
  "mlua-extras",
- "nvim-oximlua-api",
- "nvim-oximlua-libuv",
- "nvim-oximlua-macros",
- "nvim-oximlua-olua",
- "nvim-oximlua-types",
- "nvim-oximlua-vimfn",
+ "nvimo-api",
+ "nvimo-libuv",
+ "nvimo-macros",
+ "nvimo-olua",
+ "nvimo-types",
+ "nvimo-vimfn",
  "serde",
  "thiserror",
  "tokio",
 ]
 
 [[package]]
-name = "nvim-oximlua-api"
+name = "nvimo-api"
 version = "0.0.1"
 dependencies = [
  "mlua",
- "nvim-oximlua-macros",
- "nvim-oximlua-olua",
- "nvim-oximlua-types",
+ "nvimo-macros",
+ "nvimo-olua",
+ "nvimo-types",
  "serde",
  "serde_repr",
  "thiserror",
 ]
 
 [[package]]
-name = "nvim-oximlua-libuv"
+name = "nvimo-libuv"
 version = "0.0.1"
 dependencies = [
  "mlua",
- "nvim-oximlua-olua",
+ "nvimo-olua",
  "thiserror",
 ]
 
 [[package]]
-name = "nvim-oximlua-macros"
+name = "nvimo-macros"
 version = "0.0.1"
 dependencies = [
  "proc-macro2",
@@ -546,7 +546,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "nvim-oximlua-olua"
+name = "nvimo-olua"
 version = "0.0.1"
 dependencies = [
  "mlua",
@@ -554,35 +554,35 @@ dependencies = [
 ]
 
 [[package]]
-name = "nvim-oximlua-tests-integration"
+name = "nvimo-tests-integration"
 version = "0.0.1"
 dependencies = [
  "all_asserts",
  "mlua",
- "nvim-oximlua",
+ "nvimo",
  "thiserror",
 ]
 
 [[package]]
-name = "nvim-oximlua-types"
+name = "nvimo-types"
 version = "0.0.1"
 dependencies = [
  "libc",
  "mlua",
- "nvim-oximlua-olua",
+ "nvimo-olua",
  "serde",
  "thiserror",
 ]
 
 [[package]]
-name = "nvim-oximlua-vimfn"
+name = "nvimo-vimfn"
 version = "0.0.1"
 dependencies = [
  "mlua",
- "nvim-oximlua-api",
- "nvim-oximlua-macros",
- "nvim-oximlua-olua",
- "nvim-oximlua-types",
+ "nvimo-api",
+ "nvimo-macros",
+ "nvimo-olua",
+ "nvimo-types",
  "serde",
  "serde_repr",
  "thiserror",

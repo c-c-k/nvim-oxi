@@ -13,7 +13,7 @@ pub struct AutocmdCallbackArgs {
     pub buffer: Buffer,
 
     /// Arbitrary data passed to
-    /// [`nvim_oximlua::api::exec_autocmds`](crate::exec_autocmds).
+    /// [`nvimo::api::exec_autocmds`](crate::exec_autocmds).
     #[serde(default)]
     pub data: Object,
 

@@ -1,6 +1,6 @@
 [package]
-name = "nvim-oximlua-vimfn"
-description = "Rust bindings to Neovim's Vimscript functions for nvim-oximlua"
+name = "nvimo-vimfn"
+description = "Rust bindings to Neovim's Vimscript functions for nvimo"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

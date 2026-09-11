@@ -2,9 +2,9 @@ use std::sync::mpsc;
 use std::thread::sleep;
 use std::time::Duration;
 
-use nvim_oximlua::libuv::*;
+use nvimo::libuv::*;
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn timer_handle_0() {
     let (tx, rx) = mpsc::channel();
 

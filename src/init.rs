@@ -1,7 +1,6 @@
 use mlua::{ExternalResult, Lua};
 
-/// Initializes the connection between `nvim-oximlua` and
-/// [`mlua::Lua`].
+/// Initializes the connection between `nvimo` and [`mlua::Lua`].
 /// This must be called exactly once at the [mlua module entry point].
 ///
 /// [`mlua::Lua`]: ::mlua::Lua
@@ -10,12 +9,11 @@ use mlua::{ExternalResult, Lua};
 /// # Examples
 ///
 /// ```ignore
-/// use nvim_oximlua as nvim;
 /// use mlua::prelude::*;
 ///
 /// #[mlua::lua_module]
 /// fn plugin_entry_point(lua: &Lua) -> LuaResult<LuaTable> {
-///     nvim::init(lua);
+///     nvimo::init(lua);
 ///     let plugin_entry_point = lua.create_table()?;
 ///     
 ///     ...

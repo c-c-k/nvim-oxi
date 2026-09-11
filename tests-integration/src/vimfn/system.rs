@@ -1,7 +1,7 @@
-use nvim_oximlua::api::opts::*;
-use nvim_oximlua::vimfn;
+use nvimo::api::opts::*;
+use nvimo::vimfn;
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn stdpath() {
     let _ = vimfn::stdpath(StdPath::Config)
         .expect("calling `stdpath` for `StdPath::Config` failed")

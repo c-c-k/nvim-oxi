@@ -1,5 +1,5 @@
 [package]
-name = "nvim-oximlua-types"
+name = "nvimo-types"
 description = "Rust bindings to types used by Neovim's C API"
 version.workspace = true
 edition.workspace = true

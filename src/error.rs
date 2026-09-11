@@ -1,9 +1,9 @@
 use thiserror::Error as ThisError;
 
-/// `nvim-oximlua`'s result type.
+/// `nvimo`'s result type.
 pub type Result<T> = std::result::Result<T, Error>;
 
-/// `nvim-oximlua`'s error type.
+/// `nvimo`'s error type.
 #[derive(Clone, Debug, ThisError)]
 // TODO: add derive(Eq, PartialEq)
 pub enum Error {
@@ -30,5 +30,5 @@ pub enum Error {
     Mlua(#[from] mlua::Error),
 
     #[error(transparent)]
-    OxiMlua(#[from] olua::Error),
+    Olua(#[from] olua::Error),
 }

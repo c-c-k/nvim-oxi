@@ -1,6 +1,6 @@
 [package]
-name = "nvim-oximlua-macros"
-description = "Proc macros for nvim-oximlua"
+name = "nvimo-macros"
+description = "Proc macros for nvimo"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

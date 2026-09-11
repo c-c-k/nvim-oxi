@@ -1,6 +1,6 @@
-use nvim_oximlua::api::{self, opts::*, types::*};
+use nvimo::api::{self, opts::*, types::*};
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn command_nargs_0() {
     let opts = CreateCommandOpts::builder().nargs(CommandNArgs::Zero).build();
     api::create_user_command("Foo", ":", &opts).unwrap();
@@ -9,7 +9,7 @@ fn command_nargs_0() {
     assert!(err.is_err(), "expected an error when passing an argument");
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn command_nargs_1() {
     let opts = CreateCommandOpts::builder().nargs(CommandNArgs::One).build();
     api::create_user_command("Foo", ":", &opts).unwrap();
@@ -18,7 +18,7 @@ fn command_nargs_1() {
     assert_eq!(api::command("Foo foo"), Ok(()));
 }
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn regression_1() {
     let opts = CreateCommandOpts::builder()
         .bang(true)
@@ -29,7 +29,7 @@ fn regression_1() {
 }
 
 #[cfg(feature = "neovim-0-12")]
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn command_complete_customlist() {
     api::command("comclear").unwrap();
     let opts = CreateCommandOpts::builder()
@@ -51,7 +51,7 @@ fn command_complete_customlist() {
 }
 
 #[cfg(feature = "neovim-0-12")]
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn command_complete_callback() {
     api::command("comclear").unwrap();
     let opts = CreateCommandOpts::builder()

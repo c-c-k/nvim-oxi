@@ -34,14 +34,12 @@ impl Error {
 
     pub(crate) fn missing_init_error() -> Self {
         Self::Initialization(
-            "nvim-oximlua must be initialized before use".to_string(),
+            "nvimo must be initialized before use".to_string(),
         )
     }
 
     pub(crate) fn multiple_init_error() -> Self {
-        Self::Initialization(
-            "nvim-oximlua can be initialized only once".to_string(),
-        )
+        Self::Initialization("nvimo can be initialized only once".to_string())
     }
 }
 

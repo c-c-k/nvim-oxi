@@ -5,7 +5,7 @@ use syn::parse::{Parse, ParseStream};
 use syn::{AttrStyle, ItemFn, LitStr, Meta, Token, parse_macro_input};
 
 use crate::common::{DuplicateError, Keyed, KeyedAttribute};
-use crate::plugin::NvimOximlua;
+use crate::plugin::Nvimo;
 
 #[inline]
 pub fn test(attrs: TokenStream, item: TokenStream) -> TokenStream {
@@ -30,7 +30,7 @@ pub fn test(attrs: TokenStream, item: TokenStream) -> TokenStream {
         }
     };
 
-    let nvim_oximlua = &attrs.nvim_oximlua;
+    let nvimo = &attrs.nvimo;
 
     let ret = &sig.output;
 
@@ -51,13 +51,13 @@ pub fn test(attrs: TokenStream, item: TokenStream) -> TokenStream {
            fn __test_fn(#terminator) #ret {
                #block
            }
-           #nvim_oximlua::tests::test_macro::plugin_body_with_terminator(__test_fn)
+           #nvimo::tests::test_macro::plugin_body_with_terminator(__test_fn)
         },
         None => quote! {
             fn __test_fn() #ret {
                 #block
             }
-            #nvim_oximlua::tests::test_macro::plugin_body(__test_fn)
+            #nvimo::tests::test_macro::plugin_body(__test_fn)
         },
     };
 
@@ -66,22 +66,22 @@ pub fn test(attrs: TokenStream, item: TokenStream) -> TokenStream {
         fn __test_fn() #ret {
             #block
         }
-        #nvim_oximlua::tests::test_macro::plugin_body(__test_fn)
+        #nvimo::tests::test_macro::plugin_body(__test_fn)
     };
 
-    #[cfg(false)] // TODO: Adjust to nvim-oximlua
+    #[cfg(false)] // TODO: Adjust to nvimo
     let plugin_entry_point = quote! {
-        #[#nvim_oximlua::plugin(nvim_oximlua = #nvim_oximlua)]
+        #[#nvimo::plugin(nvimo = #nvimo)]
         fn #plugin_name()  {
             #plugin_body
         }
     };
 
-    #[cfg(true)] // TODO: Adjust to nvim-oximlua
+    #[cfg(true)] // TODO: Adjust to nvimo
     let plugin_entry_point = quote! {
         #[mlua::lua_module]
         fn #plugin_name(lua: &mlua::Lua) -> mlua::Result<bool> {
-            #nvim_oximlua::init(lua)?;
+            #nvimo::init(lua)?;
             #plugin_body;
             Ok(false)
         }
@@ -91,7 +91,7 @@ pub fn test(attrs: TokenStream, item: TokenStream) -> TokenStream {
         #[test]
         #(#test_attrs)*
         fn #test_name() #test_ret {
-            #maybe_ignore_err #nvim_oximlua::tests::test_macro::test_body(
+            #maybe_ignore_err #nvimo::tests::test_macro::test_body(
                 env!("CARGO_MANIFEST_PATH"),
                 stringify!(#plugin_name),
                 #extra_cmd,
@@ -106,7 +106,7 @@ pub fn test(attrs: TokenStream, item: TokenStream) -> TokenStream {
 #[derive(Default)]
 struct Attributes {
     cmd: Option<Cmd>,
-    nvim_oximlua: NvimOximlua,
+    nvimo: Nvimo,
 }
 
 impl Parse for Attributes {
@@ -114,7 +114,7 @@ impl Parse for Attributes {
     fn parse(input: ParseStream) -> syn::Result<Self> {
         let mut this = Self::default();
 
-        let mut has_parsed_nvim_oximlua = false;
+        let mut has_parsed_nvimo = false;
 
         while !input.is_empty() {
             match input.parse::<Attribute>()? {
@@ -124,12 +124,12 @@ impl Parse for Attributes {
                     }
                     this.cmd = Some(cmd);
                 },
-                Attribute::NvimOxi(nvim_oximlua) => {
-                    if has_parsed_nvim_oximlua {
-                        return Err(DuplicateError(nvim_oximlua).into());
+                Attribute::Nvimo(nvimo) => {
+                    if has_parsed_nvimo {
+                        return Err(DuplicateError(nvimo).into());
                     }
-                    this.nvim_oximlua = nvim_oximlua;
-                    has_parsed_nvim_oximlua = true;
+                    this.nvimo = nvimo;
+                    has_parsed_nvimo = true;
                 },
             }
 
@@ -144,7 +144,7 @@ impl Parse for Attributes {
 
 enum Attribute {
     Cmd(Cmd),
-    NvimOxi(NvimOximlua),
+    Nvimo(Nvimo),
 }
 
 impl Parse for Attribute {
@@ -153,7 +153,7 @@ impl Parse for Attribute {
         input
             .parse::<Cmd>()
             .map(Self::Cmd)
-            .or_else(|_| input.parse::<NvimOximlua>().map(Self::NvimOxi))
+            .or_else(|_| input.parse::<Nvimo>().map(Self::Nvimo))
     }
 }
 

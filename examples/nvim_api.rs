@@ -2,14 +2,13 @@
 //! set keymaps and manipulate floating windows.
 
 use mlua::{ExternalResult, Table};
-use nvim::api::{self, Window, opts::*, types::*};
-use nvim::mlua;
-use nvim::print;
-use nvim_oximlua as nvim;
+use nvimo::api::{self, Window, opts::*, types::*};
+use nvimo::mlua;
+use nvimo::print;
 
 #[mlua::lua_module]
 fn api(lua: &mlua::Lua) -> mlua::Result<Table> {
-    nvim::init(lua)?;
+    nvimo::init(lua)?;
 
     // Create a new `Greetings` command.
     let opts = CreateCommandOpts::builder()
@@ -42,8 +41,8 @@ fn api(lua: &mlua::Lua) -> mlua::Result<Table> {
 
     let w = Rc::clone(&win);
 
-    let open_window: nvim::Function<(), mlua::Result<()>> =
-        nvim::Function::from_fn(move |()| {
+    let open_window: nvimo::Function<(), mlua::Result<()>> =
+        nvimo::Function::from_fn(move |()| {
             if w.borrow().is_some() {
                 api::err_writeln("Window is already open");
                 return Ok(());
@@ -63,8 +62,8 @@ fn api(lua: &mlua::Lua) -> mlua::Result<Table> {
             Ok(())
         });
 
-    let close_window: nvim::Function<(), mlua::Result<()>> =
-        nvim::Function::from_fn(move |()| {
+    let close_window: nvimo::Function<(), mlua::Result<()>> =
+        nvimo::Function::from_fn(move |()| {
             if win.borrow().is_none() {
                 api::err_writeln("Window is already closed");
                 return Ok(());

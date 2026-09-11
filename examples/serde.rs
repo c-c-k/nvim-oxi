@@ -2,11 +2,11 @@
 //! [mlua serde example](https://github.com/mlua-rs/mlua/blob/main/examples/serde.rs).
 //!
 //! This original `nvim-oxi` example is currently not working due to lack of
-//! a `nvim-oximlua` compatibility layer for `nvim-oxi::lua::{Pushable, Poppable}`
+//! a `nvimo` compatibility layer for `nvim-oxi::lua::{Pushable, Poppable}`
 //! but is kept for the time being in case such a compatibility layer is added
 //! in the future.
 
-#![cfg(false)] // TODO: Adjust to nvim-oximlua
+#![cfg(false)] // TODO: Adjust to nvimo
 
 //! ## Original `nvim-oxi` description
 //!

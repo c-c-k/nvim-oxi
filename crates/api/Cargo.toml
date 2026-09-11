@@ -1,6 +1,6 @@
 [package]
-name = "nvim-oximlua-api"
-description = "Rust bindings to Neovim's C API for nvim-oximlua"
+name = "nvimo-api"
+description = "Rust bindings to Neovim's C API for nvimo"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

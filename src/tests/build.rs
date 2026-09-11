@@ -22,8 +22,8 @@ use cargo_metadata::camino::Utf8PathBuf;
 /// Add the following to your test crate's `build.rs`:
 ///
 /// ```ignore
-/// fn main() -> Result<(), nvim_oximlua::tests::BuildError> {
-///     nvim_oximlua::tests::build()
+/// fn main() -> Result<(), nvimo::tests::BuildError> {
+///     nvimo::tests::build()
 /// }
 /// ```
 ///
@@ -93,7 +93,7 @@ struct BuildCommand {
 }
 
 impl EnvVarGuard {
-    const NAME: &'static str = "NVIM_OXI_BUILDING_TESTS";
+    const NAME: &'static str = "NVIMO_BUILDING_TESTS";
 }
 
 struct EnvVar(String);
@@ -109,9 +109,7 @@ enum BuildErrorKind {
     #[error("couldn't read manifest: {0}")]
     CouldntReadManifest(cargo_metadata::Error),
 
-    #[error(
-        "nvim_oximlua::tests::build() can only be used inside a build script"
-    )]
+    #[error("nvimo::tests::build() can only be used inside a build script")]
     NotInBuildScript,
 
     #[error("couldn't get the root package")]
@@ -199,7 +197,7 @@ impl CargoManifest {
     /// crate was compiled for.
     pub(super) fn profile_env(&self) -> String {
         format!(
-            "NVIM_OXI_TEST_BUILD_PROFILE_{}",
+            "NVIMO_TEST_BUILD_PROFILE_{}",
             self.root_package().name.to_ascii_uppercase().replace('-', "_")
         )
     }
@@ -213,7 +211,7 @@ impl CargoManifest {
             // caused by invoking `cargo build` in a build script.
             //
             // See https://github.com/rust-lang/cargo/issues/6412 for more.
-            .join("nvim_oximlua_tests")
+            .join("nvimo_tests")
             // Namespace by the package name to allow for multiple test crates
             // in the same workspace.
             .join(&*self.root_package().name)

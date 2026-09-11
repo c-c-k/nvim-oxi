@@ -1,20 +1,19 @@
-//! This example shows how to use the `nvim_oxi::libuv` module to trigger
+//! This example shows how to use the `nvimo::libuv` module to trigger
 //! a callback registered on the Neovim thread from other threads.
 
 use std::thread;
 use std::time::Duration;
 
 use mlua::ExternalResult;
-use nvim::libuv::{AsyncHandle, TimerHandle};
-use nvim::mlua;
-use nvim::{print, schedule};
-use nvim_oximlua as nvim;
+use nvimo::libuv::{AsyncHandle, TimerHandle};
+use nvimo::mlua;
+use nvimo::{print, schedule};
 use tokio::sync::mpsc::{self, UnboundedSender};
 use tokio::time;
 
 #[mlua::lua_module]
 fn libuv(lua: &mlua::Lua) -> mlua::Result<mlua::Value> {
-    nvim::init(lua)?;
+    nvimo::init(lua)?;
 
     // --
     let mut n = 0;

@@ -1,6 +1,6 @@
 [package]
-name = "nvim-oximlua-olua"
-description = "core utils and mlua adapter for nvim-oximlua"
+name = "nvimo-olua"
+description = "core utils and mlua adapter for nvimo"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

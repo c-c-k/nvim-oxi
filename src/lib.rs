@@ -5,17 +5,17 @@
 //!
 //! [Neovim]: https://neovim.io
 
-#![doc(html_root_url = "https://docs.rs/nvim_oximlua/latest")]
+#![doc(html_root_url = "https://docs.rs/nvimo/latest")]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![deny(future_incompatible)]
 #![deny(nonstandard_style)]
 #![deny(rustdoc::broken_intra_doc_links)]
 
-#[cfg(false)] // TODO: Adjust to nvim-oximlua
+#[cfg(false)] // TODO: Adjust to nvimo
 #[doc(hidden)]
 pub mod entrypoint;
 mod error;
-#[cfg(true)] // TODO: Adjust to nvim-oximlua
+#[cfg(true)] // TODO: Adjust to nvimo
 mod init;
 mod toplevel;
 
@@ -61,11 +61,11 @@ pub mod mlua {
     //! [`nvim-oxi`]: https://docs.rs/nvim-oxi
 
     pub use mlua::*;
-    #[deprecated = "Including this in what is otherwise a 1:1 re-export of \
-                    the `mlua` crate can cause confusion for new users. \
-                    Please use \
-                    [`nvim_oximlua::olua::get_nvim_lua`](::olua::get_nvim_lua) \
-                    or [`nvim_oximlua::olua::lua`](::olua::lua) instead."]
+    #[deprecated = "Including this in what is otherwise a 1:1 re-export \
+                        of the `mlua` crate can cause confusion for new \
+                        users. Please use \
+                        [`nvimo::olua::get_nvim_lua`](::olua::get_nvim_lua) \
+                        or [`nvimo::olua::lua`](::olua::lua) instead."]
     pub use olua::lua;
 }
 
@@ -92,9 +92,9 @@ pub mod olua {
 }
 
 pub use error::{Error, Result};
-#[cfg(true)] // TODO: Adjust to nvim-oximlua
+#[cfg(true)] // TODO: Adjust to nvimo
 pub use init::init;
-#[cfg(false)] // TODO: Adjust to nvim-oximlua
+#[cfg(false)] // TODO: Adjust to nvimo
 pub use macros::plugin;
 #[cfg(feature = "test")]
 #[cfg_attr(docsrs, doc(cfg(feature = "test")))]

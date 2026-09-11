@@ -1,3 +1,3 @@
-fn main() -> Result<(), nvim_oximlua::tests::BuildError> {
-    nvim_oximlua::tests::build()
+fn main() -> Result<(), nvimo::tests::BuildError> {
+    nvimo::tests::build()
 }

@@ -6,7 +6,7 @@ use syn::{ItemFn, Path, Token, parse_macro_input, parse_quote};
 
 use crate::common::{DuplicateError, Keyed, KeyedAttribute};
 
-#[allow(dead_code, reason = "disabled")] // TODO: Adjust to nvim-oximlua
+#[allow(dead_code, reason = "disabled")] // TODO: Adjust to nvimo
 #[inline]
 pub fn plugin(attr: TokenStream, item: TokenStream) -> TokenStream {
     let attrs = parse_macro_input!(attr as Attributes);
@@ -18,25 +18,25 @@ pub fn plugin(attr: TokenStream, item: TokenStream) -> TokenStream {
     let lua_module =
         Ident::new(&format!("luaopen_{plugin_name}"), Span::call_site());
 
-    let nvim_oximlua = attrs.nvim_oximlua;
+    let nvimo = attrs.nvimo;
 
     quote! {
         #entrypoint
 
         #[unsafe(no_mangle)]
         unsafe extern "C" fn #lua_module(
-            state: *mut #nvim_oximlua::lua::ffi::State,
+            state: *mut #nvimo::lua::ffi::State,
         ) -> ::core::ffi::c_int {
-            #nvim_oximlua::entrypoint::entrypoint(state, #plugin_name)
+            #nvimo::entrypoint::entrypoint(state, #plugin_name)
         }
     }
     .into()
 }
 
-#[allow(unused, reason = "unused by default")] // TODO: Adjust to nvim-oximlua
+#[allow(unused, reason = "unused by default")] // TODO: Adjust to nvimo
 #[derive(Default)]
 struct Attributes {
-    nvim_oximlua: NvimOximlua,
+    nvimo: Nvimo,
 }
 
 impl Parse for Attributes {
@@ -44,18 +44,18 @@ impl Parse for Attributes {
     fn parse(input: ParseStream) -> syn::Result<Self> {
         let mut this = Self::default();
 
-        let mut has_parsed_nvim_oxi = false;
+        let mut has_parsed_nvimo = false;
 
         while !input.is_empty() {
             let keypair = input.parse::<Attribute>()?;
 
             match keypair {
-                Attribute::NvimOximlua(nvim_oximlua) => {
-                    if has_parsed_nvim_oxi {
-                        return Err(DuplicateError(nvim_oximlua).into());
+                Attribute::Nvimo(nvimo) => {
+                    if has_parsed_nvimo {
+                        return Err(DuplicateError(nvimo).into());
                     }
-                    this.nvim_oximlua = nvim_oximlua;
-                    has_parsed_nvim_oxi = true;
+                    this.nvimo = nvimo;
+                    has_parsed_nvimo = true;
                 },
             }
 
@@ -68,34 +68,31 @@ impl Parse for Attributes {
     }
 }
 
-#[allow(unused, reason = "unused by default")] // TODO: Adjust to nvim-oximlua
+#[allow(unused, reason = "unused by default")] // TODO: Adjust to nvimo
 enum Attribute {
-    NvimOximlua(NvimOximlua),
+    Nvimo(Nvimo),
 }
 
 impl Parse for Attribute {
     #[inline]
     fn parse(input: ParseStream) -> syn::Result<Self> {
-        input.parse::<NvimOximlua>().map(Self::NvimOximlua)
+        input.parse::<Nvimo>().map(Self::Nvimo)
     }
 }
 
-pub(crate) struct NvimOximlua {
+pub(crate) struct Nvimo {
     key_span: Span,
     value: Path,
 }
 
-impl Default for NvimOximlua {
+impl Default for Nvimo {
     #[inline]
     fn default() -> Self {
-        Self {
-            key_span: Span::call_site(),
-            value: parse_quote!(::nvim_oximlua),
-        }
+        Self { key_span: Span::call_site(), value: parse_quote!(::nvimo) }
     }
 }
 
-impl Parse for NvimOximlua {
+impl Parse for Nvimo {
     #[inline]
     fn parse(input: ParseStream) -> syn::Result<Self> {
         Ok(Self {
@@ -105,8 +102,8 @@ impl Parse for NvimOximlua {
     }
 }
 
-impl KeyedAttribute for NvimOximlua {
-    const KEY: &'static str = "nvim_oximlua";
+impl KeyedAttribute for Nvimo {
+    const KEY: &'static str = "nvimo";
 
     type Value = Path;
 
@@ -116,7 +113,7 @@ impl KeyedAttribute for NvimOximlua {
     }
 }
 
-impl ToTokens for NvimOximlua {
+impl ToTokens for Nvimo {
     #[inline]
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         self.value.to_tokens(tokens);

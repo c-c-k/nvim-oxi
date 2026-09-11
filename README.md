@@ -1,21 +1,21 @@
-# 🔗 nvim-oxi
+# 🔗 nvimo
 
-[![CI]](https://github.com/c-c-k/nvim-oximlua/actions) (`neovim-nightly` tests are temporarily disabled)
+[![CI]](https://github.com/c-c-k/nvimo/actions) (`neovim-nightly` tests are temporarily disabled)
 
-[CI]: https://github.com/c-c-k/nvim-oximlua/actions/workflows/ci.yaml/badge.svg
+[CI]: https://github.com/c-c-k/nvimo/actions/workflows/ci.yaml/badge.svg
 
 *First and foremost I am grateful and full of admiration towards
 [noib3](https://github.com/noib3) for creating nvim-oxi,
-the more that I work on my oximlua fork the more that I understand it to be
+the more that I work on my nvimo fork the more that I understand it to be
 a bloated abomination disfiguring the minimalistic
 elegance and beauty of nvim-oxi.*
 
-*With that said, the core motivation for nvim-oximlua is
+*With that said, the core motivation for nvimo is
 being enthusiastic about Rust and wanting to use a Rust based editor,
-but being too attached to NVIM/NeoVIM to switch to Muon or Zed.
+but being too attached to NVIM/NeoVIM to switch to Zed or Helix.
 Consequentially, contrary to nvim-oxi's pragmatic goal of
-creating a small collection of high-perfomance plugins,
-nvim-oximlua's delusional and far over the rainbow goal is
+creating a small collection of high-performance plugins,
+nvimo's delusional and far over the rainbow goal is
 to RIIR the nvim ecosystem and ultimetally maybe even nvim itself,
 with that in mind, using the Rust ecosystem as much as possible rather than
 trying to rewrite it too seems like a fair concession.*
@@ -47,10 +47,10 @@ trying to rewrite it too seems like a fair concession.*
 
 ## Cargo Features
 
-### `nvim-oximlua` specific
+### `nvimo` specific
 
 - `neovim-0-11` / `neovim-0-12` / `neovim-nightly`: Sets the target nvim
-  release for which to compile `nvim-oximlua`.
+  release for which to compile `nvimo`.
   - Exactly one of those features should be used, not adding any of them will 
     generate a compile time error, using more than one will resolve to the
     one corresponding to the newest nvim version.
@@ -62,18 +62,18 @@ trying to rewrite it too seems like a fair concession.*
 ### `mlua` Re-Exports
 
 The following features are re-exports of [`mlua` features] that enable 
-corresponding functionality in `nvim-oximlua` and/or `mlua-extras` where 
-relevant.<br>
-NOTE: Since `nvim-oximlua` is locked to the `luajit` and `module` features,
+corresponding functionality in `nvimo` and/or `mlua-extras` where relevant.
+<br>
+NOTE: Since `nvimo` is locked to the `luajit` and `module` features,
 the `lua*`, `vendored`, `module` and `send` (which is locked to `vendored`) 
 features are not re-exported. Also the `serde` feature is not re-exported 
-since `nvim-oximlua` heavily relies on [serde] and thus it is always enabled.
+since `nvimo` heavily relies on [serde] and thus it is always enabled.
 
 - `async`: enable async/await support
   (any executor can be used, eg. [tokio] or [async-std]).
 - `error-send`: make `mlua:Error: Send + Sync`.
 - `macros`: enable procedural macros (such as `chunk!`).
-  - NOTE: This does not currently effect any of the `nvim-oximlua` macros.
+  - NOTE: This does not currently effect any of the `nvimo` macros.
 - `anyhow`: enable `anyhow::Error` conversion into Lua (enables `error-send`).
 - `userdata-wrappers`: opt into `impl UserData` for
   `Rc<T>`/`Arc<T>`/`Rc<RefCell<T>>`/`Arc<Mutex<T>>` where `T: UserData`
@@ -93,35 +93,31 @@ The first step is to create a new library crate with `cargo new --lib
 crate-type = ["cdylib"]
 
 [dependencies]
-nvim-oximlua = { git = "https://github.com/c-c-k/nvim-oximlua" }
+nvimo = "0.0.1"
 ```
 
-NOTE: `nvim-oximlua` hasn't been released to `crates.io` yet so it has to be 
-installed from it's github source.
-
 NOTE: `mlua` and `mlua-extras` should **NOT** be directly added to avoid 
-potential version and feature conflicts, please use the `nvim-oximlua::mlua` 
-and `nvim-oximlua::mlua_extras` re-exports instead. All relevant `mlua` and 
-`mlua-extras` features are re-exported as `nvim-oximlua` features
+potential version and feature conflicts, please use the `nvimo::mlua` 
+and `nvimo::mlua_extras` re-exports instead. All relevant `mlua` and 
+`mlua-extras` features are re-exported as `nvimo` features
 (see [`mlua` Re-Exports](#mlua-re-exports) above).
 
 Next, in `lib.rs` we'll annotate the entry point of the plugin with the
-`#[mlua::lua_module]` macro and add the `nvim-oximlua::init` shim:
+`#[mlua::lua_module]` macro and add the `nvimo::init` shim:
 
 ```rust
 // lib.rs
-use nvim_oximlua as nvim;
 use nvim::mlua;
 
 #[mlua::lua_module]
 fn foo(lua: &mlua::Lua) -> mlua::Result<i32> {
-    nvim::init(lua)?;
+    nvimo::init(lua)?;
     Ok(42)
 }
 ```
 
 macOS users will also need to set a few linker arguments to tell the Rust
-linker that the FFI functions `nvim-oxi` links to will only be available at
+linker that the FFI functions `nvimo` links to will only be available at
 runtime. A possible way to do this is to create a `.cargo/config` file with the
 following content:
 
@@ -174,7 +170,7 @@ print(require("foo")) -- prints `42`
 Anything that uses `nvim_oxi::lua` directly (e.g. implementations of
 `nvim_oxi::lua:{Pushable, Poppable}` for custom types).
 
-If you need this to give `nvim-oximlua` a try please open an issue with 
+If you need this to give `nvimo` a try please open an issue with 
 a request for a compatibility layer for `nvim_oxi::lua` (preferably with
 links to key places in your plugin/config where you need such compatibility).
 
@@ -185,17 +181,17 @@ is low priority.
 
 Hopefully everything else.
 <br>
-Usage of `nvim_oximlua::mlua::lua` will work but give deprecation warnings.
+Usage of `nvimo::mlua::lua` will work but give deprecation warnings.
 
 ### Required Adjustments
 
 #### Cargo Crate Dependency
 
-The cargo dependency needs to changed from `nvim-oxi = {...}` to
-`nvim-oximlua = { git = "https://github.com/c-c-k/nvim-oximlua", ... }`.
+The cargo dependency needs to be changed from `nvim-oxi = {...}` to
+`nvimo = { ... }`.
 <br>
-Or `nvim-oxi = { package = "nvim-oximlua", git = ... }`
-To avoid the need to change `nvim_oxi` to `nvim_oximlua` everywhere.
+Or `nvim-oxi = { package = "nvimo", ... }`
+To avoid the need to change `nvim_oxi` to `nvimo` everywhere.
 
 #### Plugin / Config Entry Point Adjustments
 
@@ -208,31 +204,31 @@ Please see the [compatibility example], the overall list of changes is:
   `#[mlua::lua_module]`:
   - A `lua: &mlua::Lua` parameter needs to be added.
   - The return type needs to be wrapped in `mlua::Result`.
-  - `nvim::init(lua)?;` needs to be called at the function body's start.
+  - `nvim_oxi::init(lua)?;` needs to be called at the function body's start.
 
-[compatibility example]: https://github.com/c-c-k/nvim-oximlua/blob/main/examples/exports_compatibility.rs
+[compatibility example]: https://github.com/c-c-k/nvimo/blob/main/examples/exports_compatibility.rs
 
 ## Examples
 
 Please see the [examples] directory as well as the [mlua examples]
 and the [mlua-extras examples].
 
-[examples]: https://github.com/c-c-k/nvim-oximlua/tree/main/examples
+[examples]: https://github.com/c-c-k/nvimo/tree/main/examples
 [mlua examples]: https://github.com/mlua-rs/mlua/tree/main/examples
 [mlua-extras examples]: https://github.com/tired-fox/mlua-extras/tree/main/examples
 
 ## Testing
 
-Turning on the `test` feature enables `#[nvim_oxi::test]`, which replaces the
+Turning on the `test` feature enables `#[nvimo::test]`, which replaces the
 regular `#[test]` macro and allows you to test a piece of code from within a
 nvim instance using Rust's testing framework.
 
 For example:
 
 ```rust
-use nvim_oximlua::api;
+use nvimo::api;
 
-#[nvim_oximlua::test]
+#[nvimo::test]
 fn set_get_del_var() {
     api::set_var("foo", 42).unwrap();
     assert_eq!(Ok(42), api::get_var("foo"));
@@ -248,12 +244,12 @@ crate, even if they belong to different modules. For example, this won't work:
 
 ```rust
 mod a {
-    #[nvim_oximlua::test]
+    #[nvimo::test]
     fn foo() {}
 }
 
 mod b {
-    #[nvim_oximlua::test]
+    #[nvimo::test]
     fn foo() {}
 }
 ```
@@ -263,7 +259,7 @@ the following build script:
 
 ```rust
 // build.rs
-fn main() -> Result<(), nvim_oximlua::tests::BuildError> {
-    nvim_oximlua::tests::build()
+fn main() -> Result<(), nvimo::tests::BuildError> {
+    nvimo::tests::build()
 }
 ```

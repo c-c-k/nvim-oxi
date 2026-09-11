@@ -7,8 +7,8 @@ version = "0.0.1"
 edition = "2024"
 authors = ["Riccardo Mazzarini <me@noib3.dev>", "c-c-k <c-c-k@nym.hush.com>"]
 rust-version = "1.95.0"
-documentation = "https://docs.rs/nvim-oximlua"
-repository = "https://github.com/c-c-k/nvim-oximlua"
+documentation = "https://docs.rs/nvimo"
+repository = "https://github.com/c-c-k/nvimo"
 license = "MIT"
 keywords = ["bindings", "neovim", "nvim", "mlua"]
 
@@ -25,17 +25,17 @@ thiserror = "2"
 tokio = "1"
 
 # NOTE: The version and features of `mlua` must be in sync
-#       between `nvim-oximlua` and `mlua-extras`!
+#       between `nvimo` and `mlua-extras`!
 mlua = { version = "0.11.6", features = ["luajit", "serde"] }
 mlua-extras = { version = "11.6.2", features = ["luajit"] }
 
 # Internal dependencies.
-api = { path = "./crates/api", package = "nvim-oximlua-api" }
-libuv = { path = "./crates/libuv", package = "nvim-oximlua-libuv" }
-macros = { path = "./crates/macros", package = "nvim-oximlua-macros" }
-olua = { path = "./crates/olua", package = "nvim-oximlua-olua" }
-types = { path = "./crates/types", package = "nvim-oximlua-types" }
-vimfn = { path = "./crates/vimfn", package = "nvim-oximlua-vimfn" }
+api = { path = "./crates/api", package = "nvimo-api" }
+libuv = { path = "./crates/libuv", package = "nvimo-libuv" }
+macros = { path = "./crates/macros", package = "nvimo-macros" }
+olua = { path = "./crates/olua", package = "nvimo-olua" }
+types = { path = "./crates/types", package = "nvimo-types" }
+vimfn = { path = "./crates/vimfn", package = "nvimo-vimfn" }
 
 [workspace.lints.clippy]
 mixed_attributes_style = "allow"
@@ -48,8 +48,8 @@ broken_intra_doc_links = "deny"
 private_intra_doc_links = "deny"
 
 [package]
-name = "nvim-oximlua"
-description = "Rust bindings to all things Neovim"
+name = "nvimo"
+description = "A fork of nvim-oxi (Rust bindings to all things Neovim) using mlua for Rust-Lua interop"
 readme = "./README.md"
 version.workspace = true
 edition.workspace = true

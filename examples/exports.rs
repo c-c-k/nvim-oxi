@@ -12,21 +12,20 @@
 //! ```
 
 use mlua::Table;
-use nvim::mlua;
-use nvim_oximlua as nvim;
+use nvimo::mlua;
 
 const THE_ANSWER: i32 = 42;
 
 #[mlua::lua_module]
 fn calc(lua: &mlua::Lua) -> mlua::Result<Table> {
-    nvim::init(lua)?;
+    nvimo::init(lua)?;
 
-    let add = nvim::Function::from_fn(|(a, b): (i32, i32)| a + b);
+    let add = nvimo::Function::from_fn(|(a, b): (i32, i32)| a + b);
 
-    let multiply = nvim::Function::from_fn(|(a, b): (i32, i32)| a * b);
+    let multiply = nvimo::Function::from_fn(|(a, b): (i32, i32)| a * b);
 
-    let compute = nvim::Function::from_fn(
-        |(fun, a, b): (nvim::Function<(i32, i32), i32>, i32, i32)| {
+    let compute = nvimo::Function::from_fn(
+        |(fun, a, b): (nvimo::Function<(i32, i32), i32>, i32, i32)| {
             fun.call((a, b)).unwrap()
         },
     );
